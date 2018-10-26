@@ -1,0 +1,18 @@
+
+// 满屏宽度
+$--full-width: 20rem;
+
+* {
+  box-sizing: border-box;
+}
+
+input{
+  border-radius: 0;
+  -webkit-appearance:none; /*去除input默认样式*/
+}
+
+img {
+  vertical-align: bottom;
+}
+
+
