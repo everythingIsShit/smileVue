@@ -4,12 +4,10 @@
 * @module: 分类列表
 -->
 <template>
-    <div>
-      <div class="navbar-div">
-        <van-nav-bar title="类别列表" />
-      </div>
+    <div :style="{height: winHeight}" class="clearfix">
+      <van-nav-bar title="类别列表" fixed/>
       <van-row>
-        <van-col span="6">
+        <van-col span="6" class="left-col">
           <div class="leftNav">
             <ul>
               <li v-for="(item,index) in cateList"
@@ -23,23 +21,24 @@
         </van-col>
         <van-col span="18">
           <div class="tabCategorySub">
-            <van-tabs v-model="active">
+            <van-tabs v-model="active" @change="cateSubChange">
               <van-tab
                 v-for="(item, index) in categorySub"
                 :key="index"
-                @change="_ => {cateSubClick(item.ID)}"
                 :title="item.MALL_SUB_NAME">
               </van-tab>
             </van-tabs>
             <div class="list-div">
               <van-pull-refresh v-model="isRefresh" @refresh="onRefresh">
                 <van-list
+                  :offset="100"
+                  :immediate-check="false"
                   v-model="loading"
                   :finished="finished"
                   @load="onLoad"
                 >
-                  <div class="list-item" v-for="(item,index) in goodList" :key="index">
-                    <div class="list-item-img"><img :src="item.IMAGE1" width="100%"/></div>
+                  <div class="list-item" v-for="(item,index) in goodList" :key="index" @click="$router.push(`/goods/${item.ID}`)">
+                    <div class="list-item-img"><img :src="item.IMAGE1" width="100%" :onerror="errorImg"/></div>
                     <div class="list-item-text">
                       <div>{{item.NAME}}</div>
                       <div class="">￥{{item.ORI_PRICE}}</div>
@@ -60,9 +59,14 @@ export default {
   name: 'CateList',
   components: {},
   created () {
+    // 获取屏幕高度
     Api.getCateList().then(res => {
       this.cateList = res.data
       this.clickCategory(0, this.cateList[0].ID)
+    })
+    this.$nextTick(_ => {
+      this.getWinHeigth()
+      window.onresize = this.getWinHeigth
     })
   },
   data () {
@@ -72,14 +76,19 @@ export default {
       goodList: [], // 商品分类
       categoryIndex: 0,
       active: '',
+      winHeight: 0, // 浏览器高度
       categorySubId: '', // 当前小分类的id
       page: 1,
       isRefresh: false,
+      errorImg: 'this.src="' + require('@/assets/images/errorimg.png') + '"', // 错误图片显示路径
       loading: false, // 是否处于加载状态，加载过程中不触发load事件
       finished: false // 是否已加载完成，加载完成后不再触发load事件
     }
   },
   methods: {
+    getWinHeigth () {
+      this.winHeight = window.screen.height + 'px'
+    },
     // 点击大类的方法
     clickCategory (index, cateId) {
       this.page = 1
@@ -98,33 +107,60 @@ export default {
         this.getGoodsList()
       })
     },
-    cateSubClick (categorySubId) {
-      this.categorySubId = categorySubId
+    // 子分类导航栏change事件
+    cateSubChange (index) {
+      this.page = 1
+      this.categorySubId = this.categorySub[index].ID
       this.getGoodsList()
     },
-    onRefresh () {},
+    // 下拉刷新
+    onRefresh () {
+      this.page = 1
+      this.finished = false
+      this.getGoodsList()
+    },
     // 获取商品列表
-    getGoodsList () {
+    getGoodsList (loadMore = false) {
       const params = {
         page: this.page,
-        categorySubId: this.categorySubId
+        cateId: this.categorySubId
+      }
+      if (!loadMore) {
+        this.goodList = []
       }
       Api.getGoodsListByCateId(params).then(res => {
-        this.page++
-        this.goodList = res.data
+        if (res.data.length === 0) {
+          if (!loadMore) {
+            this.$toast.fail('未查询到商品')
+          } else {
+            this.$toast.clear()
+          }
+          this.finished = true
+          return
+        }
+        if (loadMore) {
+          this.goodList.concat(res.data)
+        } else {
+          this.goodList = res.data
+        }
+      }).finally(_ => {
+        this.isRefresh = false
+        this.loading = false
       })
     },
+    // 上拉加载更多
     onLoad () {
-      // 异步更新数据
-      setTimeout(_ => {
-        this.getGoodsList()
-      }, 2000)
+      this.page++
+      this.getGoodsList(true)
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+  .left-col{
+    border-right:1px solid #E4E7ED;
+  }
   .leftNav ul li {
     line-height: 2rem;
     border-bottom:1px solid #E4E7ED;
@@ -132,14 +168,19 @@ export default {
     font-size:0.8rem;
     text-align: center;
   }
-  .categoryActive {
-    background-color: #fff;
+  .van-row {
+    padding-top: 46px;
+    height: 100%;
+    .van-col{
+      height: 100%;
+      overflow: auto;
+    }
   }
-  .list-item{
-    text-align: center;
-    line-height: 80px;
-    border-bottom: 1px solid #f0f0f0;
-    background-color: #fff;
+  .van-nav-bar{
+    z-index: 100 !important;
+  }
+  .categoryActive {
+    color: #f00;
   }
   .list-div{
     overflow: scroll;
@@ -153,6 +194,7 @@ export default {
     padding:5px;
   }
   .list-div{
+    height: calc(100% - 44px);
     overflow: scroll;
   }
   .list-item-img{
@@ -162,5 +204,11 @@ export default {
     flex:16;
     margin-top:10px;
     margin-left:10px;
+  }
+  .tabCategorySub{
+    height: 100%;
+  }
+  /deep/ .van-tabs__wrap--scrollable .van-tab{
+    flex: 0 0 30%;
   }
 </style>

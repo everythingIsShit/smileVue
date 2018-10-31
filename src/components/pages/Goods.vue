@@ -14,7 +14,7 @@
         />
       </div>
       <div class="topimage-div">
-        <img :src="goodsInfo.IMAGE1" width="100%"/>
+        <img :src="goodsInfo.IMAGE1" width="100%" :onerror="errorImg"/>
       </div>
       <div class="goods-price">￥{{goodsInfo.PRESENT_PRICE}}</div>
       <div class="goods-name">{{goodsInfo.NAME}}</div>
@@ -32,7 +32,7 @@
       <!--底部按钮-->
       <div class="goods-bottom">
         <div>
-          <van-button size="large" type="primary">加入购物车</van-button>
+          <van-button size="large" type="primary" @click="addToCart">加入购物车</van-button>
         </div>
         <div>
           <van-button size="large" type="danger">直接购买</van-button>
@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import api from '@/api/api'
+import Api from '@/api/api'
 import { toMoney } from '@/utils/moneyFilter.js'
 export default {
   name: 'Goods',
@@ -63,10 +63,12 @@ export default {
   },
   data () {
     return {
+      errorImg: 'this.src="' + require('@/assets/images/errorimg.png') + '"', // 错误图片显示路径
       goodsInfo: {} // 商品详细数据
     }
   },
   methods: {
+    // 获取商品详情
     getGoodsInfo () {
       const params = {
         goodsId: this.goodsId
@@ -76,10 +78,19 @@ export default {
         duration: 0,
         message: '商品加载中...'
       })
-      api.getDetailGoodsInfo(params).then(res => {
+      Api.getDetailGoodsInfo(params).then(res => {
         this.goodsInfo = res.data
       }).finally(_ => {
         this.$toast.clear()
+      })
+    },
+    // 添加至购物车
+    addToCart () {
+      const params = {
+        goodsId: this.goodsId
+      }
+      Api.addToCart(params).then(res => {
+        this.$toast.success(res.message)
       })
     }
   },

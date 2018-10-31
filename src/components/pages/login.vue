@@ -39,13 +39,20 @@
         >
           登录
         </van-button>
+        <van-button
+          @click="$router.push('/register')"
+          class="btn-item"
+          size="small"
+        >
+          注册
+        </van-button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import api from '@/api/api'
+import Api from '@/api/api'
 export default {
   name: 'Register',
   components: {},
@@ -53,8 +60,8 @@ export default {
   },
   data () {
     return {
-      username: '',
-      password: '',
+      username: '123456',
+      password: '123456',
       usernameErrorMsg: '',
       passwordErrorMsg: '',
       loading: false
@@ -74,7 +81,7 @@ export default {
         this.usernameErrorMsg = ''
       }
       if (!this.password) {
-        this.usernameErrorMsg = '面不能为空'
+        this.usernameErrorMsg = '用户名不能为空'
       } else if (this.password.length < 6) {
         this.passwordErrorMsg = '密码不能少于6位'
       } else {
@@ -92,9 +99,19 @@ export default {
         password: this.password
       }
       this.loading = true
-      api.login(params).then(res => {
+      Api.login(params).then(res => {
+        // 将token存入session
+        if (!window.localStorage) {
+          this.$toast.fail('浏览器不支持localstorage')
+        } else {
+          window.localStorage.setItem('token', res.token)
+        }
         this.$toast.success(res.message)
-        this.$router.push('/')
+        if (this.$router.currentRoute.query.redirect) {
+          this.$router.push(this.$router.currentRoute.query.redirect)
+        } else {
+          this.$router.push('/')
+        }
       }).catch(err => {
         this.$toast.fail(err)
       }).finally(_ => {
@@ -116,6 +133,7 @@ export default {
     padding-top:10px;
     .btn-item{
       width: 100%;
+      margin-top: 10px;
     }
   }
 </style>

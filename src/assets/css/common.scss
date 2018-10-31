@@ -15,4 +15,19 @@ img {
   vertical-align: bottom;
 }
 
+.clear {
+  content: '';
+  display: block;
+  clear: both;
+}
+ .clearfix{
+   clear: both;
+   &:after{
+    @extend .clear
+   }
+   &:before{
+     @extend .clear
+   }
+ }
+
 

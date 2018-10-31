@@ -12,7 +12,8 @@ const URL = {
   getDetailGoodsInfo: LOCALURL + 'goods/getDetailGoodsInfo',
   getCateList: LOCALURL + 'goods/getCateList',
   getCateSubList: LOCALURL + 'goods/getCateSubList',
-  getGoodsListByCateId: LOCALURL + 'goods/getGoodsListByCateId'
+  getGoodsListByCateId: LOCALURL + 'goods/getGoodsListByCateId',
+  addToCart: LOCALURL + 'user/addGoodsToCart'
 }
 
 export default {
@@ -43,5 +44,9 @@ export default {
   // 根据商品小类获取商品列表
   getGoodsListByCateId (params) {
     return request.post(URL.getGoodsListByCateId, params)
+  },
+  // 添加至购物车
+  addToCart (params) {
+    return request.post(URL.addToCart, params)
   }
 }

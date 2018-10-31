@@ -8,6 +8,7 @@ const userSchema = new Schema({
   UserId: ObjectId,
   username: String,
   password: String,
+  cart: [String],
   createAt: {type: Date, default: Date.now()},
   lastLoginAt: {type: Date, default: Date.now()}
 }, {
