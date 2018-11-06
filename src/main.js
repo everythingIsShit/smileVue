@@ -8,10 +8,9 @@ import './assets/css/common.scss'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
 
-import { Button, Row, Col, Swipe, SwipeItem, Field, NavBar, list, Toast, Tab, Tabs, pullRefresh } from 'vant'
+import Vant from 'vant'
 
-Vue.use(Button).use(Row).use(Col).use(Swipe).use(SwipeItem)
-  .use(Field).use(NavBar).use(list).use(Toast).use(Tab).use(Tabs).use(pullRefresh)
+Vue.use(Vant)
 Vue.use(VueAwesomeSwiper)
 Vue.use(VueLazyLoad, {
   error: './assets/images/errorimg.png'

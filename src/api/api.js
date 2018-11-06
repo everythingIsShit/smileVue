@@ -2,10 +2,11 @@
 import request from '../utils/request'
 
 const BASEURL = 'https://www.easy-mock.com/mock/5bce8c8d98c3e07240b7e110/example/'
-const LOCALURL = 'http://192.168.191.1:3000/'
+// const LOCALURL = 'http://47.107.98.115:443/'
+const LOCALURL = 'http://192.168.191.1:443/'
 
 const URL = {
-  getShoppingMallInfo: BASEURL + 'index',
+  getInitData: LOCALURL + 'goods/getInitData',
   getGoodsInfo: BASEURL + 'getFoodsList',
   registerUser: LOCALURL + 'user/register',
   login: LOCALURL + 'user/login',
@@ -13,10 +14,15 @@ const URL = {
   getCateList: LOCALURL + 'goods/getCateList',
   getCateSubList: LOCALURL + 'goods/getCateSubList',
   getGoodsListByCateId: LOCALURL + 'goods/getGoodsListByCateId',
-  addToCart: LOCALURL + 'user/addGoodsToCart'
+  addToCart: LOCALURL + 'user/addGoodsToCart',
+  getGoodsByUseId: LOCALURL + 'user/getGoodsByUseId'
 }
 
 export default {
+  // 获取初始化数据
+  getInitData () {
+    return request.get(URL.getInitData)
+  },
   // 获取商品列表
   getGoodsInfo () {
     return request.get(URL.getGoodsInfo)
@@ -48,5 +54,9 @@ export default {
   // 添加至购物车
   addToCart (params) {
     return request.post(URL.addToCart, params)
+  },
+  // 获取购物车商品列表
+  getGoodsByUseId (params) {
+    return request.post(URL.getGoodsByUseId, params)
   }
 }

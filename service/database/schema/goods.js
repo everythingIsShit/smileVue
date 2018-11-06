@@ -21,6 +21,7 @@ const goodsSchema = new Schema({
   IMAGE3: String,
   IMAGE4: String,
   IMAGE5: String,
+  HOT: Boolean,
   ORIGIN_PLACE: String,
   GOOD_SCENT: String,
   CREATE_TIME: String,

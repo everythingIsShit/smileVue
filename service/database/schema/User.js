@@ -1,14 +1,13 @@
 const mongoose = require('mongoose') // 引入Mongoose
 const Schema = mongoose.Schema // 声明Schema
-let ObjectId = Schema.Types.ObjectId // 声明Object类型
 const bcrypt = require('bcryptjs')
 const SALT_WORK_FACTOR = 10
 // 创建用户Schema
 const userSchema = new Schema({
-  UserId: ObjectId,
+  UserId: Schema.Types.ObjectId,
   username: String,
   password: String,
-  cart: [String],
+  cart: [Schema.Types.Mixed],
   createAt: {type: Date, default: Date.now()},
   lastLoginAt: {type: Date, default: Date.now()}
 }, {

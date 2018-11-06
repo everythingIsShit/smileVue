@@ -8,6 +8,7 @@ axios.interceptors.request.use(config => {
   // 加上token
   if (localStorage['token']) {
     config.headers['Authorization'] = `Bearer ${localStorage['token']}`
+    console.log(config)
   }
   return config
 }, error => {
@@ -38,8 +39,7 @@ function handleResult (promiseObj) {
         if (res.data.code === 200 || !res.data.code) {
           resolve(res.data)
         } else { // 请求错误
-          // Toast.fail(res.data.message)
-          Toast.fail('请求错误')
+          Toast.fail(res.data.message)
           reject(res.data)
         }
       } else { // 服务器错误
@@ -49,6 +49,7 @@ function handleResult (promiseObj) {
       }
     }).catch(err => { // 网络错误
       // Toast.fail(err)
+      console.log(err)
       Toast.fail('网络错误')
       reject(err)
     })
@@ -57,6 +58,7 @@ function handleResult (promiseObj) {
 
 export default {
   post (url = '/', paramObj) {
+    console.log(url)
     return handleResult(axios.post(url, paramObj))
   },
   get (url = '/') {

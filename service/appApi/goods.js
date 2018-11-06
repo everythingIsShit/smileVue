@@ -17,7 +17,22 @@ router.get('/insertAllGoodsInfo', async ctx => {
     data = JSON.parse(data)
     let saveCount = 0
     const Goods = mongoose.model('goods')
-    data.forEach(async value => {
+    // 从商品中随机选择20个作为热门商品
+    let randomNum = []
+    for (let i = 0; i < 20; i++) {
+      let num = Math.floor(Math.random() * 50)
+      if (randomNum.includes(num)) {
+        i--
+      } else {
+        randomNum.push(i)
+      }
+    }
+    data.forEach(async (value, index) => {
+      if (randomNum.includes(index)) {
+        value.HOT = true
+      } else {
+        value.HOT = false
+      }
       let newGoods = new Goods(value)
       await newGoods.save().then(_ => {
         saveCount++
@@ -28,6 +43,20 @@ router.get('/insertAllGoodsInfo', async ctx => {
     })
   })
   ctx.body = '开始导入数据'
+})
+
+// 根据数据库数据生成json文件
+router.get('/getGoodsJson', async ctx => {
+  const Goods = mongoose.model('goods')
+  let result = await Goods.find().exec()
+  console.log(result.length)
+  await fs.writeFile('./jsonData/json/newGoods.json', JSON.stringify(result), err => {
+    if (err) console.log('写文件操作失败')
+    else {
+      ctx.body = result
+      console.log('写文件操作成功')
+    }
+  })
 })
 
 // 插入分类
@@ -76,6 +105,60 @@ router.get('/insertAllCategorySub', async ctx => {
     })
   })
   ctx.body = '开始导入数据'
+})
+
+// 获取首页初始化数据
+router.get('/getInitData', async ctx => {
+  let data = {
+    category: [],
+    slides: [],
+    recommend: [],
+    hotGoods: [],
+    floor: []
+  }
+  const Goods = mongoose.model('goods')
+  const Category = mongoose.model('category')
+  await Category.find().exec().then(result => {
+    if (result) {
+      data.category = result
+      data.floor = data.data.category.slice(0, 3)
+    } else {
+      ctx.body = {code: 500, message: '类别搜索出错'}
+    }
+  }).catch(err => {
+    ctx.body = {code: 500, message: err}
+  })
+
+  await Goods.find().exec().then(goods => {
+    if (goods) {
+      goods.forEach(item => {
+        // 添加顶部轮播商品
+        if (item.STATE) {
+          data.slides.push(item)
+        }
+        // 添加推荐商品
+        if (item.IS_RECOMMEND) {
+          data.recommend.push(item)
+        }
+        // 添加热门商品
+        if (item.HOT) {
+          data.hotGoods.push(item)
+        }
+        // 添加楼层数据
+        data.floor.forEach(floor => {
+          if (item.SUB_ID === floor.ID) {
+          }
+        })
+      })
+      data.slides = data.slides.slice(0, 3)
+    } else {
+      ctx.body = {code: 500, message: '商品搜索出错'}
+    }
+  }).catch(err => {
+    ctx.body = {code: 500, message: err}
+  })
+
+  ctx.body = {code: 200, message: '', data: data}
 })
 
 // 获取商品详情

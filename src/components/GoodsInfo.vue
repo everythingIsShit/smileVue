@@ -6,10 +6,10 @@
 <template>
   <div class="goods-info">
     <div class="goods-image">
-      <img v-lazy="item.image" width="90%" />
+      <img v-lazy="item.IMAGE1" width="90%" />
     </div>
-    <div class="goods-name">{{item.name}}</div>
-    <div class="goods-price">￥{{item.price | moneyFilter }}</div>
+    <div class="goods-name">{{item.NAME}}</div>
+    <div class="goods-price">￥{{item.ORI_PRICE | moneyFilter }}</div>
   </div>
 </template>
 <script>

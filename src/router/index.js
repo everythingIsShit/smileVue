@@ -6,17 +6,29 @@ import Login from '@/components/pages/Login'
 import Goods from '@/components/pages/Goods'
 import CateList from '@/components/pages/CateList'
 import ShoppingCar from '@/components/pages/ShoppingCar'
+import Main from '@/components/pages/Main'
+import UserCenter from '@/components/pages/UserCenter'
+import Pay from '@/components/pages/Pay'
 
 Vue.use(Router)
 
 let router = new Router({
   routes: [
-    {path: '/', name: 'ShoppingMall', component: ShoppingMall, meta: {requireAuth: true}},
+    {path: '/', redirect: '/main'},
     {path: '/register', name: 'Register', component: Register},
     {path: '/login', name: 'Login', component: Login},
     {path: '/goods/:goodsId', name: 'Goods', component: Goods, props: true, meta: {requireAuth: true}},
-    {path: '/cateList', name: 'CateList', component: CateList, meta: {requireAuth: true}},
-    {path: '/shoppingCar', name: 'ShoppingCar', component: ShoppingCar, meta: {requireAuth: true}}
+    {
+      path: '/main',
+      component: Main,
+      children: [
+        {path: '/', name: 'ShoppingMall', component: ShoppingMall, meta: {requireAuth: true}},
+        {path: 'cateList', name: 'CateList', component: CateList, meta: {requireAuth: true}},
+        {path: 'shoppingCar', name: 'shoppingCar', component: ShoppingCar, meta: {requireAuth: true}},
+        {path: 'userCenter', name: 'UserCenter', component: UserCenter, meta: {requireAuth: true}},
+        {path: 'pay', name: 'Pay', component: Pay, meta: {requireAuth: true}}
+      ]
+    }
   ]
 })
 

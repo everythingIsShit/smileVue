@@ -17,15 +17,20 @@
     <!--swipwer area-->
     <div class="swiper-area">
       <van-swipe :autoplay="2000">
-        <van-swipe-item v-for="(banner,index) in bannerPicArray" :key="index">
-          <img v-lazy="banner.image" class="swipe-img"/>
+        <van-swipe-item v-for="(banner,index) in bannerPicArray" :key="index" @click.native="goGoodsPage(banner.ID)">
+          <img v-lazy="banner.IMAGE1" class="swipe-img"/>
         </van-swipe-item>
       </van-swipe>
     </div>
     <div class="type-bar">
-      <div  v-for="(cate,index) in category" :key="index" class="type-item">
-        <img v-lazy="cate.image" width="90%" />
-        <span>{{cate.mallCategoryName}}</span>
+      <div
+        v-for="(cate,index) in category"
+        :key="index"
+        class="type-item"
+        @click="$router.push(`/main/cateList?cateId=${cate.ID}`)"
+      >
+        <img v-lazy="cate.IMAGE" width="90%" />
+        <span>{{cate.MALL_CATEGORY_NAME}}</span>
       </div>
     </div>
     <!--Recommend goods area-->
@@ -37,10 +42,10 @@
         <!--swiper-->
         <swiper :options="swiperOption">
           <swiper-slide v-for=" (item ,index) in recommendGoods" :key="index">
-            <div class="recommend-item">
-              <img :src="item.image" width="80%" />
-              <div>{{item.goodsName}}</div>
-              <div>￥{{item.price}} (￥{{item.mallPrice}})</div>
+            <div class="recommend-item" @click="goGoodsPage(item.ID)">
+              <img :src="item.IMAGE1" width="80%" />
+              <div>{{item.NAME}}</div>
+              <div>￥{{item.ORI_PRICE}} (￥{{item.PRESENT_PRICE}})</div>
             </div>
           </swiper-slide>
         </swiper>
@@ -56,7 +61,7 @@
         <van-list>
           <van-row gutter="20">
             <van-col span="12" v-for="(item,index) in hotGoods" :key="index">
-              <goods-info :item="item" @click.native="goGoodsPage(item.goodsId)"></goods-info>
+              <goods-info :item="item" @click.native="goGoodsPage(item.ID)"></goods-info>
             </van-col>
           </van-row>
         </van-list>
@@ -68,7 +73,7 @@
 import FloorComponent from '../FloorComponent'
 import GoodsInfo from '../GoodsInfo'
 import { toMoney } from '@/utils/moneyFilter.js'
-import api from '@/api/api'
+import Api from '@/api/api'
 export default {
   components: {
     FloorComponent,
@@ -115,16 +120,7 @@ export default {
       duration: 0,
       message: '数据加载中...'
     })
-    api.getGoodsInfo().then(data => {
-      this.category = data.data.category
-      this.bannerPicArray = data.data.slides
-      this.recommendGoods = data.data.recommend
-      this.floor1 = data.data.floor1
-      this.floor2 = data.data.floor2
-      this.floor3 = data.data.floor3
-      this.floorName = data.data.floorName
-      this.hotGoods = data.data.hotGoods
-    }).finally(_ => {
+    Promise.all([this.getInitData(), this.getFloorData()]).finally(_ => {
       this.$toast.clear()
     })
   },
@@ -132,6 +128,24 @@ export default {
     // 去商品详情页
     goGoodsPage (goodsId) {
       this.$router.push(`/goods/${goodsId}`)
+    },
+    // 获取初始化信息
+    async getInitData () {
+      await Api.getInitData().then(data => {
+        this.category = data.data.category
+        this.bannerPicArray = data.data.slides
+        this.recommendGoods = data.data.recommend
+        this.hotGoods = data.data.hotGoods
+      })
+    },
+    // 获取楼层数据
+    async getFloorData () {
+      await Api.getGoodsInfo().then(data => {
+        this.floor1 = data.data.floor1
+        this.floor2 = data.data.floor2
+        this.floor3 = data.data.floor3
+        this.floorName = data.data.floorName
+      })
     }
   }
 }

@@ -11,8 +11,8 @@
           <div class="leftNav">
             <ul>
               <li v-for="(item,index) in cateList"
-                  @click="clickCategory(index, item.ID)"
-                  :class="{categoryActive:categoryIndex == index}"
+                  @click="clickCategory(item.ID)"
+                  :class="{categoryActive:currentCate == item.ID}"
                   :key="index">
                 {{item.MALL_CATEGORY_NAME}}
               </li>
@@ -58,23 +58,12 @@ import Api from '@/api/api'
 export default {
   name: 'CateList',
   components: {},
-  created () {
-    // 获取屏幕高度
-    Api.getCateList().then(res => {
-      this.cateList = res.data
-      this.clickCategory(0, this.cateList[0].ID)
-    })
-    this.$nextTick(_ => {
-      this.getWinHeigth()
-      window.onresize = this.getWinHeigth
-    })
-  },
   data () {
     return {
       cateList: [], // 分类列表
       categorySub: [], // 子分类
       goodList: [], // 商品分类
-      categoryIndex: 0,
+      currentCate: 0, // 当前点击的分类ID
       active: '',
       winHeight: 0, // 浏览器高度
       categorySubId: '', // 当前小分类的id
@@ -85,14 +74,29 @@ export default {
       finished: false // 是否已加载完成，加载完成后不再触发load事件
     }
   },
+  created () {
+    this.$nextTick(_ => {
+      // 获取屏幕高度
+      this.getWinHeigth()
+      window.onresize = this.getWinHeigth
+    })
+  },
   methods: {
+    // 获取大类列表
+    getCateList () {
+      Api.getCateList().then(res => {
+        this.cateList = res.data
+        let id = this.$route.query.cateId ? this.$route.query.cateId : this.cateList[0].ID
+        this.clickCategory(id)
+      })
+    },
     getWinHeigth () {
       this.winHeight = window.screen.height + 'px'
     },
     // 点击大类的方法
-    clickCategory (index, cateId) {
+    clickCategory (cateId) {
       this.page = 1
-      this.categoryIndex = index
+      this.currentCate = cateId
       this.getCateSub(cateId)
     },
     // 获取小类
@@ -153,6 +157,15 @@ export default {
       this.page++
       this.getGoodsList(true)
     }
+  },
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      vm.getCateList()
+    })
+  },
+  beforeRouteUpdate (to, from, next) {
+    this.getCateList()
+    next()
   }
 }
 </script>
@@ -169,7 +182,7 @@ export default {
     text-align: center;
   }
   .van-row {
-    padding-top: 46px;
+    padding: 46px 0 50px 0;
     height: 100%;
     .van-col{
       height: 100%;

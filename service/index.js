@@ -1,7 +1,7 @@
 
 const Koa = require('koa')
 const Router = require('koa-router')
-let user = require('./appApi/user.js')
+let user = require('./appApi/User.js')
 let goods = require('./appApi/goods.js')
 const bodyParser = require('koa-bodyparser')
 const cors = require('koa2-cors')
@@ -29,7 +29,9 @@ app.use(function (ctx, next) {
 app.use(jwt({
   secret
 }).unless({
-  path: [/\/user\/register/, /\/user\/login/]
+  path: [/\/user\/register/, /\/user\/login/, /\/goods\/insertAllGoodsInfo/, /\/goods\/getGoodsJson/, /\/goods\/insertAllCategory/,
+    /\/goods\/insertAllCategorySub/
+  ]
 }))
 
 // 引入connect
@@ -43,7 +45,7 @@ const { connect, initSchemas } = require('./database/init.js')
   router.use('/goods', goods.routes())
   app.use(router.routes()).use(router.allowedMethods())
 
-  app.listen(3000, _ => {
-    console.log('[Server] starting at port 3000')
+  app.listen(443, _ => {
+    console.log('[Server] starting at port 443')
   })
 })()

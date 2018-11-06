@@ -27,6 +27,13 @@
         placeholder="请输入密码"
         required
       />
+      <van-field
+        v-model.trim="passwordAgain"
+        type="password"
+        label="密码"
+        placeholder="请再次输入密码"
+        required
+      />
       <div class="register-button">
         <van-button
           type="primary"
@@ -53,6 +60,7 @@ export default {
     return {
       username: '',
       password: '',
+      passwordAgain: '',
       loading: false
     }
   },
@@ -74,6 +82,10 @@ export default {
         this.$toast.fail('密码不能少于6位')
         return false
       }
+      if (this.password !== this.passwordAgain) {
+        this.$toast.fail('两次密码输入不一致')
+        return false
+      }
       return true
     },
     // 注册
@@ -87,6 +99,7 @@ export default {
       }
       this.loading = true
       api.registerUser(params).then(res => {
+        this.$router.push('/main')
         this.$toast.success(res.message)
       }).finally(_ => {
         this.loading = false

@@ -60,8 +60,8 @@ export default {
   },
   data () {
     return {
-      username: '123456',
-      password: '123456',
+      username: '',
+      password: '',
       usernameErrorMsg: '',
       passwordErrorMsg: '',
       loading: false
@@ -101,16 +101,16 @@ export default {
       this.loading = true
       Api.login(params).then(res => {
         // 将token存入session
-        if (!window.localStorage) {
+        if (!localStorage) {
           this.$toast.fail('浏览器不支持localstorage')
         } else {
-          window.localStorage.setItem('token', res.token)
+          localStorage.setItem('token', res.token)
         }
         this.$toast.success(res.message)
         if (this.$router.currentRoute.query.redirect) {
           this.$router.push(this.$router.currentRoute.query.redirect)
         } else {
-          this.$router.push('/')
+          this.$router.push('/main')
         }
       }).catch(err => {
         this.$toast.fail(err)
