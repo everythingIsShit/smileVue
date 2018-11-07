@@ -1,30 +1,23 @@
-# smilevue
+﻿## 前端项目运行
 
-> a project made by leijianxiong
+进入项目根目录
 
-## Build Setup
-
-``` bash
-# install dependencies
+### \#安装依赖
 npm install
 
-# serve with hot reload at localhost:8080
+### \#启动
 npm run dev
 
-# build for production with minification
-npm run build
+## 启动后端服务
 
-# build for production and view the bundle analyzer report
-npm run build --report
+### \#安装mongoDB并启动
+参考[https://www.cnblogs.com/GainLoss/p/6906937.html][1]
 
-# run unit tests
-npm run unit
+### \#进入service目录，安装依赖
+npm install
 
-# run e2e tests
-npm run e2e
+### \#运行服务
+node index.js
 
-# run all tests
-npm test
-```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+  [1]: https://www.cnblogs.com/GainLoss/p/6906937.html

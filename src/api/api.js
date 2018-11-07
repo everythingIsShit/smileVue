@@ -2,14 +2,15 @@
 import request from '../utils/request'
 
 const BASEURL = 'https://www.easy-mock.com/mock/5bce8c8d98c3e07240b7e110/example/'
-// const LOCALURL = 'http://47.107.98.115:443/'
+const LOCAL = false
+const ALIURL = 'http://47.107.98.115:443/'
 const LOCALURL = 'http://192.168.191.1:443/'
 
 const URL = {
   getInitData: LOCALURL + 'goods/getInitData',
   getGoodsInfo: BASEURL + 'getFoodsList',
   registerUser: LOCALURL + 'user/register',
-  login: LOCALURL + 'user/login',
+  login: LOCAL ? LOCALURL + 'user/login' : ALIURL + 'user/userLogin',
   getDetailGoodsInfo: LOCALURL + 'goods/getDetailGoodsInfo',
   getCateList: LOCALURL + 'goods/getCateList',
   getCateSubList: LOCALURL + 'goods/getCateSubList',
