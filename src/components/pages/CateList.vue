@@ -77,8 +77,8 @@ export default {
   created () {
     this.$nextTick(_ => {
       // 获取屏幕高度
-      this.getWinHeigth()
-      window.onresize = this.getWinHeigth
+      this.getWinHeight()
+      window.onresize = this.getWinHeight
     })
   },
   methods: {
@@ -90,7 +90,7 @@ export default {
         this.clickCategory(id)
       })
     },
-    getWinHeigth () {
+    getWinHeight () {
       this.winHeight = window.screen.height + 'px'
     },
     // 点击大类的方法

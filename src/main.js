@@ -30,14 +30,16 @@ import
   CellGroup,
   ContactCard,
   ContactList,
-  ContactEdit
+  ContactEdit,
+  AddressList,
+  AddressEdit
 } from 'vant'
 
 Vue.use(Button).use(Row).use(Col).use(Swipe).use(SwipeItem)
   .use(Field).use(NavBar).use(list).use(Toast).use(Tab).use(Tabs)
   .use(pullRefresh).use(Tabbar).use(TabbarItem).use(Stepper)
   .use(SubmitBar).use(Cell).use(CellGroup).use(ContactCard)
-  .use(ContactList).use(ContactEdit)
+  .use(ContactList).use(ContactEdit).use(AddressList).use(AddressEdit)
 Vue.use(VueAwesomeSwiper)
 Vue.use(VueLazyLoad, {
   error: './assets/images/errorimg.png'

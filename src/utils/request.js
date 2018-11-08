@@ -8,7 +8,6 @@ axios.interceptors.request.use(config => {
   // 加上token
   if (localStorage['token']) {
     config.headers['Authorization'] = `Bearer ${localStorage['token']}`
-    console.log(config)
   }
   return config
 }, error => {

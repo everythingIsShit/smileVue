@@ -9,18 +9,13 @@
       <header class="header">
         <van-row>
           <van-col span="8" class="avatar">
-            <img src="../../assets/images/avatar.jpg" alt="">
+            <img src="../../assets/images/avatar.jpg" alt="头像">
           </van-col>
           <van-col span="14" class="username">刘桂林</van-col>
           <van-col span="2" class="more">&gt;</van-col>
         </van-row>
       </header>
-      <van-cell-group>
-        <van-cell title="收货地址" icon="location" is-link/>
-      </van-cell-group>
-      <van-cell-group>
-        <van-cell title="联系方式" icon="chat" is-link/>
-      </van-cell-group>
+      <h2 class="van-doc-demo-block__title">送货地址</h2>
     </div>
 </template>
 
@@ -31,9 +26,11 @@ export default {
   created () {
   },
   data () {
-    return {}
+    return {
+    }
   },
-  methods: {}
+  methods: {
+  }
 }
 </script>
 
@@ -59,5 +56,12 @@ export default {
       font-weight: bold;
       text-align: right;
     }
+  }
+  .van-doc-demo-block__title {
+    margin: 0;
+    font-weight: 400;
+    font-size: 14px;
+    color: #383535;
+    padding: 40px 15px 15px;
   }
 </style>
