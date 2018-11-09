@@ -4,7 +4,7 @@
 * @module: 底部导航栏
 -->
 <template>
-    <div>
+    <div class="main">
       <div class="main-div">
         <keep-alive>
           <router-view/>
@@ -46,5 +46,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.main{
+  height: 100%;
+}
+.main-div{
+  height: calc(100% - 50px);
+  overflow: auto;
+}
 </style>

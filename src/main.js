@@ -32,7 +32,9 @@ import
   ContactList,
   ContactEdit,
   AddressList,
-  AddressEdit
+  AddressEdit,
+  Icon,
+  Popup
 } from 'vant'
 
 Vue.use(Button).use(Row).use(Col).use(Swipe).use(SwipeItem)
@@ -40,6 +42,7 @@ Vue.use(Button).use(Row).use(Col).use(Swipe).use(SwipeItem)
   .use(pullRefresh).use(Tabbar).use(TabbarItem).use(Stepper)
   .use(SubmitBar).use(Cell).use(CellGroup).use(ContactCard)
   .use(ContactList).use(ContactEdit).use(AddressList).use(AddressEdit)
+  .use(Icon).use(Popup)
 Vue.use(VueAwesomeSwiper)
 Vue.use(VueLazyLoad, {
   error: './assets/images/errorimg.png'

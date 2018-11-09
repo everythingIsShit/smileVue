@@ -4,7 +4,7 @@
 * @module: 分类列表
 -->
 <template>
-    <div :style="{height: winHeight}" class="clearfix">
+    <div class="clearfix cate-list">
       <van-nav-bar title="类别列表" fixed/>
       <van-row>
         <van-col span="6" class="left-col">
@@ -65,7 +65,6 @@ export default {
       goodList: [], // 商品分类
       currentCate: 0, // 当前点击的分类ID
       active: '',
-      winHeight: 0, // 浏览器高度
       categorySubId: '', // 当前小分类的id
       page: 1,
       isRefresh: false,
@@ -75,11 +74,6 @@ export default {
     }
   },
   created () {
-    this.$nextTick(_ => {
-      // 获取屏幕高度
-      this.getWinHeight()
-      window.onresize = this.getWinHeight
-    })
   },
   methods: {
     // 获取大类列表
@@ -89,9 +83,6 @@ export default {
         let id = this.$route.query.cateId ? this.$route.query.cateId : this.cateList[0].ID
         this.clickCategory(id)
       })
-    },
-    getWinHeight () {
-      this.winHeight = window.screen.height + 'px'
     },
     // 点击大类的方法
     clickCategory (cateId) {
@@ -171,6 +162,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .cate-list{
+    height: 100%;
+  }
   .left-col{
     border-right:1px solid #E4E7ED;
   }

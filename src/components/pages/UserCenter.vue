@@ -4,7 +4,7 @@
 * @module: 用户中心
 -->
 <template>
-    <div>
+    <div class="user-center">
       <!--<van-nav-bar title="用户中心" fixed/>-->
       <header class="header">
         <van-row>
@@ -12,10 +12,23 @@
             <img src="../../assets/images/avatar.jpg" alt="头像">
           </van-col>
           <van-col span="14" class="username">刘桂林</van-col>
-          <van-col span="2" class="more">&gt;</van-col>
+          <van-col span="2" class="more">
+            <van-icon name="arrow"/>
+          </van-col>
         </van-row>
       </header>
       <h2 class="van-doc-demo-block__title">送货地址</h2>
+      <div class="van-cell van-cell--clickable van-address-item" @click="$router.push('/addressList')">
+        <div class="van-cell__value van-cell__value--alone">
+          <div class="van-radio">
+            <span class="van-radio__label">
+              <div class="van-address-item__name">张三，13000000000</div>
+              <div class="van-address-item__address">浙江省杭州市西湖区文三路 138 号东方通信大厦 7 楼 501 室</div>
+            </span>
+          </div>
+        </div>
+        <van-icon name="arrow"/>
+      </div>
     </div>
 </template>
 
@@ -39,6 +52,7 @@ export default {
     padding: 1rem;
     line-height: 5rem;
     background: #e5017d;
+    position: relative;
     .avatar{
       img{
         width: 5rem;
@@ -63,5 +77,19 @@ export default {
     font-size: 14px;
     color: #383535;
     padding: 40px 15px 15px;
+  }
+  .van-address-item .van-radio__label{
+    padding-left: 0;
+  }
+  .van-icon-arrow{
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    font-size: 16px;
+    transform: translate(0, -50%);
+  }
+  .user-center{
+    background: #eee;
+    height: 100%;
   }
 </style>
