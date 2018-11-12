@@ -176,7 +176,7 @@ export default {
     text-align: center;
   }
   .van-row {
-    padding: 46px 0 50px 0;
+    padding-top: 46px;
     height: 100%;
     .van-col{
       height: 100%;

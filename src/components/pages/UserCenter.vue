@@ -11,43 +11,81 @@
           <van-col span="8" class="avatar">
             <img src="../../assets/images/avatar.jpg" alt="头像">
           </van-col>
-          <van-col span="14" class="username">刘桂林</van-col>
+          <van-col span="14" class="username">{{username}}</van-col>
           <van-col span="2" class="more">
             <van-icon name="arrow"/>
           </van-col>
         </van-row>
       </header>
-      <h2 class="van-doc-demo-block__title">送货地址</h2>
-      <div class="van-cell van-cell--clickable van-address-item" @click="$router.push('/addressList')">
-        <div class="van-cell__value van-cell__value--alone">
-          <div class="van-radio">
+      <template v-if="address">
+        <h2 class="van-doc-demo-block__title">送货地址</h2>
+        <div class="van-cell van-cell--clickable van-address-item" @click="$router.push('/addressList')">
+          <div class="van-cell__value van-cell__value--alone">
+            <div class="van-radio">
             <span class="van-radio__label">
-              <div class="van-address-item__name">张三，13000000000</div>
-              <div class="van-address-item__address">浙江省杭州市西湖区文三路 138 号东方通信大厦 7 楼 501 室</div>
+              <div class="van-address-item__name">{{`${address.contacts}，${address.telephone}`}}</div>
+              <div class="van-address-item__address">{{address.address + address.addressDetail}}</div>
             </span>
+            </div>
           </div>
+          <van-icon name="arrow"/>
         </div>
-        <van-icon name="arrow"/>
-      </div>
+      </template>
+      <template v-else>
+        <p class="tip">暂无默认收获地址</p>
+        <van-button
+          type="primary"
+          @click="$router.push('/addressList')"
+          class="btn-item"
+          size="small"
+        >
+          设置默认收获地址
+        </van-button>
+      </template>
     </div>
 </template>
 
 <script>
+import Api from '@/api/api'
 export default {
   name: 'UserCenter',
   components: {},
   created () {
+    this.getAddressList()
+    this.username = localStorage.getItem('username')
   },
   data () {
     return {
+      address: null
     }
   },
   methods: {
+    getAddressList () {
+      Api.getAddressList().then(res => {
+        this.address = res.data.find(address => address.defaultAddress)
+      })
+    }
+  },
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      vm.getAddressList()
+    })
   }
 }
 </script>
 
 <style lang="scss" scoped>
+  .btn-item{
+    width: 90%;
+    display: block;
+    margin: 10px auto 0;
+  }
+  .tip{
+    text-align: center;
+    font-size: 14px;
+    padding-top: 2rem;
+    color: #aaa;
+  }
   .header{
     padding: 1rem;
     line-height: 5rem;

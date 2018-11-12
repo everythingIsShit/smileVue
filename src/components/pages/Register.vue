@@ -99,6 +99,8 @@ export default {
       }
       this.loading = true
       api.registerUser(params).then(res => {
+        localStorage.setItem('token', res.token)
+        localStorage.setItem('username', res.data)
         this.$router.push('/main')
         this.$toast.success(res.message)
       }).finally(_ => {

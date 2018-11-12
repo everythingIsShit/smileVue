@@ -16,17 +16,15 @@
         :list="list"
         :disabled-list="disabledList"
         disabled-text="以下地址超出配送范围"
-        @add="$router.push('/addressEdit')"
-        @edit="showAddressEdit = true"
-      ></van-address-list>>
-      <!--地址列表弹窗-->
-      <van-popup v-model="showAddressEdit" position="right" :overlay="false" class="address-popup">
-
-      </van-popup>
+        @select="addressChange"
+        @add="add"
+        @edit="edit"
+      ></van-address-list>
     </div>
 </template>
 
 <script>
+import Api from '@/api/api'
 export default {
   name: 'AddressList',
   components: {},
@@ -35,34 +33,64 @@ export default {
   data () {
     return {
       show: false,
-      showAddressEdit: false,
-      chosenAddressId: '1',
-      list: [
-        {
-          id: '1',
-          name: '张三',
-          tel: '13000000000',
-          address: '浙江省杭州市西湖区文三路 138 号东方通信大厦 7 楼 501 室'
-        },
-        {
-          id: '2',
-          name: '李四',
-          tel: '1310000000',
-          address: '浙江省杭州市拱墅区莫干山路 50 号'
-        }
-      ],
-      disabledList: [
-        {
-          id: '3',
-          name: '王五',
-          tel: '1320000000',
-          address: '浙江省杭州市滨江区江南大道 15 号'
-        }
-      ]
+      chosenAddressId: '',
+      list: [], // 地址列表
+      disabledList: []
     }
   },
   methods: {
-    // 弹出新增地址编辑框
+    getAddressList () {
+      Api.getAddressList().then(res => {
+        res.data.forEach(item => {
+          const obj = {
+            id: item._id,
+            name: item.contacts,
+            tel: item.telephone,
+            address: item.address,
+            areaCode: item.areaCode,
+            addressDetail: item.addressDetail,
+            isDefault: item.defaultAddress
+          }
+          if (item.defaultAddress) {
+            this.chosenAddressId = item._id
+          }
+          this.list.push(obj)
+        })
+      })
+    },
+    // 地址编辑
+    edit (item) {
+      if (localStorage) {
+        localStorage.setItem('selectedAddress', JSON.stringify(item))
+        this.$router.push('/addressEdit')
+      } else {
+        this.$toast.fail('对不起您的浏览器版本太低')
+      }
+    },
+    // 添加新地址
+    add () {
+      if (localStorage) {
+        localStorage.removeItem('selectedAddress')
+        this.$router.push('/addressEdit')
+      } else {
+        this.$toast.fail('对不起您的浏览器版本太低')
+      }
+    },
+    // 设置默认地址
+    addressChange (item) {
+      console.log(item)
+      const params = {
+        addressId: item.id
+      }
+      Api.setDefaultAddress(params).then(res => {
+        console.log(res)
+      })
+    }
+  },
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      vm.getAddressList()
+    })
   }
 }
 </script>

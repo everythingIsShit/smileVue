@@ -48,10 +48,14 @@ Vue.use(VueLazyLoad, {
   error: './assets/images/errorimg.png'
 })
 
-/* eslint-disable no-new */
-new Vue({
-  el: '#app',
-  router,
-  components: { App },
-  template: '<App/>'
-})
+if (!localStorage) {
+  Toast.fail('您的浏览器版本太低')
+} else {
+  /* eslint-disable no-new */
+  new Vue({
+    el: '#app',
+    router,
+    components: { App },
+    template: '<App/>'
+  })
+}

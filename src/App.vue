@@ -24,9 +24,9 @@ export default {
       } else if (from.name === 'AddressList' && to.name === 'UserCenter') {
         this.transitionName = 'slide-right'
       } else if (from.name === 'AddressList' && to.name === 'AddressEdit') {
-        this.transitionName = 'slide-top'
+        this.transitionName = 'slide-left'
       } else if (from.name === 'AddressEdit' && to.name === 'AddressList') {
-        this.transitionName = 'slide-bottom'
+        this.transitionName = 'slide-right'
       } else {
         this.transitionName = ''
       }
@@ -50,8 +50,9 @@ export default {
 .slide-left-enter-active,
 .slide-left-leave-active {
   will-change: transform;
-  transition: all 200000ms;
+  transition: all 500ms;
   position: absolute;
+  width: 100%;
 }
 .slide-right-enter {
   opacity: 0;
@@ -70,17 +71,17 @@ export default {
   transform: translate3d(-100%, 0, 0);
 }
 .slide-top-enter {
-  transform: translate(0, 100%);
+  transform: translate(0, -100%);
 }
 .slide-top-leave-active {
-  transform: translate(0, -100%);
+  transform: translate(0, 100%);
 }
 .slide-top-enter {
   opacity: 0;
-  transform: translate3d(0, -100%, 0);
+  transform: translate(0, -100%);
 }
 .slide-top-leave-active {
   opacity: 0;
-  transform: translate3d(0, 100%, 0);
+  transform: translate(0, 100%);
 }
 </style>

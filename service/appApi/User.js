@@ -2,8 +2,8 @@
 const mongoose = require('mongoose')
 const Router = require('koa-router')
 const jsonwebtoken = require('jsonwebtoken')
-const jwt = require('jsonwebtoken')
 const secret = require('../config/secret').secret
+const util = require('../utils/util')
 
 const router = new Router()
 
@@ -29,6 +29,7 @@ router.post('/register', async ctx => {
       await newUser.save().then(user => {
         ctx.body = {
           code: 200,
+          data: newUser.username,
           token: jsonwebtoken.sign({
             userId: user._id,
             // 设置 token 过期时间
@@ -62,6 +63,7 @@ router.post('/login', async ctx => {
         } else {
           ctx.body = {
             code: 200,
+            data: result.username,
             // 生成 token 返回给客户端
             token: jsonwebtoken.sign({
               userId: result._id,
@@ -87,8 +89,7 @@ router.post('/login', async ctx => {
 router.post('/addGoodsToCart', async ctx => {
   try {
     const goodsId = ctx.request.body.goodsId
-    const credentials = ctx.header.authorization.split(' ')[1]
-    const userId = await jwt.verify(credentials, secret).userId
+    const userId = util.getUserId(ctx)
     const User = mongoose.model('UserObj')
     // 检查用户名是否存在
     await User.findOne({_id: userId}).exec().then(async result => {
@@ -122,8 +123,7 @@ router.post('/addGoodsToCart', async ctx => {
 // 获取购物车商品列表
 router.post('/getGoodsByUseId', async ctx => {
   try {
-    const credentials = ctx.header.authorization.split(' ')[1]
-    const userId = await jwt.verify(credentials, secret).userId
+    const userId = util.getUserId(ctx)
     const User = mongoose.model('UserObj')
     const Goods = mongoose.model('goods')
     // 检查用户名是否存在
@@ -146,6 +146,75 @@ router.post('/getGoodsByUseId', async ctx => {
         ctx.body = {code: 500, message: '查找不到用户，请重新登录'}
       }
     })
+  } catch (err) {
+    console.log(err)
+    ctx.body = {code: 500, message: err}
+  }
+})
+
+// 获取地址列表
+router.get('/getAddressList', async ctx => {
+  const userId = util.getUserId(ctx)
+  const Address = mongoose.model('address')
+  await Address.find({userId: userId}).exec().then(addressList => {
+    if (addressList) {
+      ctx.body = {code: 200, message: '', data: addressList}
+    } else {
+      ctx.body = {code: 200, message: '', data: []}
+    }
+  }).catch(err => {
+    ctx.body = {code: 500, message: err}
+  })
+})
+
+// 新增地址
+router.post('/addAddress', async ctx => {
+  try {
+    const userId = util.getUserId(ctx)
+    const newAddress = ctx.request.body
+    const Address = mongoose.model('address')
+    // 将之前的默认地址取消
+    if (newAddress.defaultAddress) {
+      await Address.updateOne({defaultAddress: true, userId: userId}, {$set: {defaultAddress: false}}).exec()
+    }
+    // 插入新地址
+    newAddress.userId = userId
+    await new Address(newAddress).save()
+    ctx.body = {code: 200, message: ''}
+  } catch (err) {
+    console.log(err)
+    ctx.body = {code: 500, message: err}
+  }
+})
+
+// 编辑
+router.post('/editAddress', async ctx => {
+  try {
+    const newAddress = ctx.request.body
+    const Address = mongoose.model('address')
+    const userId = util.getUserId(ctx)
+    // 将之前的默认地址取消
+    if (newAddress.defaultAddress) {
+      await Address.updateOne({defaultAddress: true, userId: userId}, {$set: {defaultAddress: false}}).exec()
+    }
+    await Address.updateOne({_id: newAddress._id}, {$set: newAddress}).exec()
+    ctx.body = {code: 200, message: ''}
+  } catch (err) {
+    console.log(err)
+    ctx.body = {code: 500, message: err}
+  }
+})
+
+// 设置默认地址
+router.post('/setDefaultAddress', async ctx => {
+  try {
+    const editAddreeId = ctx.request.body.addressId
+    const Address = mongoose.model('address')
+    const userId = util.getUserId(ctx)
+    // 将之前的默认地址取消
+    await Address.updateOne({defaultAddress: true, userId: userId}, {$set: {defaultAddress: false}}).exec()
+    await Address.updateOne({_id: editAddreeId}, {$set: {defaultAddress: true}}).exec()
+    ctx.body = {code: 200, message: ''}
   } catch (err) {
     console.log(err)
     ctx.body = {code: 500, message: err}

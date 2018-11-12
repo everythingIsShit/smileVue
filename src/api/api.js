@@ -15,7 +15,11 @@ const URL = {
   getCateSubList: LOCALURL + 'goods/getCateSubList',
   getGoodsListByCateId: LOCALURL + 'goods/getGoodsListByCateId',
   addToCart: LOCALURL + 'user/addGoodsToCart',
-  getGoodsByUseId: LOCALURL + 'user/getGoodsByUseId'
+  getGoodsByUseId: LOCALURL + 'user/getGoodsByUseId',
+  getAddressList: LOCALURL + 'user/getAddressList',
+  addAddress: LOCALURL + 'user/addAddress',
+  setDefaultAddress: LOCALURL + 'user/setDefaultAddress',
+  editAddress: LOCALURL + 'user/editAddress'
 }
 
 export default {
@@ -58,5 +62,21 @@ export default {
   // 获取购物车商品列表
   getGoodsByUseId (params) {
     return request.post(URL.getGoodsByUseId, params)
+  },
+  // 获取地址列表
+  getAddressList () {
+    return request.get(URL.getAddressList)
+  },
+  // 添加新地址
+  addAddress (params) {
+    return request.post(URL.addAddress, params)
+  },
+  // 设置默认地址
+  setDefaultAddress (params) {
+    return request.post(URL.setDefaultAddress, params)
+  },
+  // 编辑修改地址
+  editAddress (params) {
+    return request.post(URL.editAddress, params)
   }
 }

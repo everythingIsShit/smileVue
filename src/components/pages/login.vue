@@ -101,11 +101,8 @@ export default {
       this.loading = true
       Api.login(params).then(res => {
         // 将token存入session
-        if (!localStorage) {
-          this.$toast.fail('浏览器不支持localstorage')
-        } else {
-          localStorage.setItem('token', res.token)
-        }
+        localStorage.setItem('token', res.token)
+        localStorage.setItem('username', res.data)
         this.$toast.success(res.message)
         if (this.$router.currentRoute.query.redirect) {
           this.$router.push(this.$router.currentRoute.query.redirect)
