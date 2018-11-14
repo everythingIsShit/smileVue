@@ -35,7 +35,7 @@
           <van-button size="large" type="primary" @click="addToCart">加入购物车</van-button>
         </div>
         <div>
-          <van-button size="large" type="danger">直接购买</van-button>
+          <van-button size="large" type="danger" @click="purchase">直接购买</van-button>
         </div>
       </div>
     </div>
@@ -92,6 +92,9 @@ export default {
       Api.addToCart(params).then(res => {
         this.$toast.success(res.message)
       })
+    },
+    purchase () {
+      this.$toast.success('购买成功')
     }
   },
   filters: {

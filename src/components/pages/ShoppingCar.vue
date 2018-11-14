@@ -28,7 +28,7 @@
     <van-submit-bar
       :loading="loading"
       :price="totalPrice"
-      button-text="提交订单"
+      button-text="付款"
       @submit="onSubmit"
     />
   </div>
@@ -75,6 +75,7 @@ export default {
       this.loading = true
       setTimeout(_ => {
         this.loading = false
+        this.$toast.success('购买成功')
       }, 2000)
     }
   },

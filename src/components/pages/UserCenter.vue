@@ -12,7 +12,7 @@
             <img src="../../assets/images/avatar.jpg" alt="头像">
           </van-col>
           <van-col span="14" class="username">{{username}}</van-col>
-          <van-col span="2" class="more">
+          <van-col span="2" class="more" v-show="false">
             <van-icon name="arrow"/>
           </van-col>
         </van-row>

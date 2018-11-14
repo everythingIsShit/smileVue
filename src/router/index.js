@@ -24,6 +24,7 @@ let router = new Router({
     {path: '/addressList', name: 'AddressList', component: AddressList, meta: {requireAuth: true}},
     {path: '/addressEdit', name: 'AddressEdit', component: AddressEdit, meta: {requireAuth: true}},
     {path: '/goodsList/:searchTxt', name: 'GoodsList', component: GoodsList, meta: {requireAuth: true}, props: true},
+    {path: 'pay', name: 'Pay', component: Pay, meta: {requireAuth: true}},
     {
       path: '/main',
       component: Main,
@@ -31,8 +32,7 @@ let router = new Router({
         {path: '/', name: 'ShoppingMall', component: ShoppingMall, meta: {requireAuth: true}},
         {path: 'cateList', name: 'CateList', component: CateList, meta: {requireAuth: true}},
         {path: 'shoppingCar', name: 'shoppingCar', component: ShoppingCar, meta: {requireAuth: true}},
-        {path: 'userCenter', name: 'UserCenter', component: UserCenter, meta: {requireAuth: true}},
-        {path: 'pay', name: 'Pay', component: Pay, meta: {requireAuth: true}}
+        {path: 'userCenter', name: 'UserCenter', component: UserCenter, meta: {requireAuth: true}}
       ]
     }
   ]
