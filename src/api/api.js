@@ -2,8 +2,7 @@
 import request from '../utils/request'
 
 const BASEURL = 'https://www.easy-mock.com/mock/5bce8c8d98c3e07240b7e110/example/'
-const LOCAL = true
-const LOCALURL = LOCAL ? 'http://192.168.191.1:443/' : 'http://47.107.98.115:443/'
+const LOCALURL = process.env.NODE_ENV === 'production' ? 'http://47.107.98.115:443/' : 'http://192.168.191.1:443/'
 
 const URL = {
   getInitData: LOCALURL + 'goods/getInitData',
@@ -78,5 +77,5 @@ export default {
   // 编辑修改地址
   editAddress (params) {
     return request.post(URL.editAddress, params)
-  },
+  }
 }

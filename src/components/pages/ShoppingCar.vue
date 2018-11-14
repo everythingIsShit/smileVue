@@ -8,7 +8,7 @@
     <div class="navbar-div">
       <van-nav-bar title="购物车" fixed/>
       <!--显示购物车中的商品-->
-      <div class="cart-list">
+      <div class="cart-list" v-if="cartInfo.length!==0">
         <div class="pang-row" v-for="(item,index) in cartInfo" :key="index">
           <div class="pang-img"><img :src="item.IMAGE1" width="100%" /></div>
           <div class="pang-text">
@@ -19,6 +19,9 @@
           </div>
           <div class="pang-goods-price">￥{{item.ORI_PRICE * item.COUNT | moneyFilter}}</div>
         </div>
+      </div>
+      <div style="margin-top: 200px" v-else>
+        <p class="info">购物车还没有商品哦！赶紧去添加吧！</p>
       </div>
     </div>
     <!--清空购物车-->
@@ -88,6 +91,11 @@ export default {
 }
 </script>
 <style scoped lang="scss">
+  .info{
+    font-size: 14px;
+    text-align: center;
+    color: #aaa;
+  }
   .cart-list{
     padding: 46px 0 100px 0;
     background-color: #fff;

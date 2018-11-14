@@ -42,6 +42,7 @@
           设置默认收获地址
         </van-button>
       </template>
+      <div class="cancel" @click="$router.push('/login')">注销</div>
     </div>
 </template>
 
@@ -75,6 +76,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .cancel{
+    background: #ffffff;
+    line-height: 30px;
+    text-align: center;
+    letter-spacing: 4px;
+    font-size: 14px;
+    color: #f00;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 50px;
+  }
   .btn-item{
     width: 90%;
     display: block;
@@ -129,5 +142,6 @@ export default {
   .user-center{
     background: #eee;
     height: 100%;
+    position: relative;
   }
 </style>
