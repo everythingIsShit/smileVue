@@ -207,15 +207,24 @@ router.post('/getCateSubList', async ctx => {
   }
 })
 
-// 根据商品小类获取商品列表
-router.post('/getGoodsListByCateId', async ctx => {
+// 根据查询条件获取商品列表
+router.post('/getGoodsList', async ctx => {
   try {
     let cateId = ctx.request.body.cateId
+    const content = ctx.request.body.content
+    let query = {}
+    if (cateId) {
+      query.SUB_ID = cateId
+    }
+    if (content) {
+      const reg = new RegExp(content, 'i')
+      query.NAME = {$regex: reg}
+    }
     let page = ctx.request.body.page
     let num = 10 // 每页显示数量
     let start = (page - 1) * num
     const Goods = mongoose.model('goods')
-    let result = await Goods.find({SUB_ID: cateId}).skip(start).limit(num).exec()
+    let result = await Goods.find(query).skip(start).limit(num).exec()
     if (result) {
       ctx.body = {code: 200, message: '', data: result}
     } else {

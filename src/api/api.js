@@ -13,7 +13,7 @@ const URL = {
   getDetailGoodsInfo: LOCALURL + 'goods/getDetailGoodsInfo',
   getCateList: LOCALURL + 'goods/getCateList',
   getCateSubList: LOCALURL + 'goods/getCateSubList',
-  getGoodsListByCateId: LOCALURL + 'goods/getGoodsListByCateId',
+  getGoodsList: LOCALURL + 'goods/getGoodsList',
   addToCart: LOCALURL + 'user/addGoodsToCart',
   getGoodsByUseId: LOCALURL + 'user/getGoodsByUseId',
   getAddressList: LOCALURL + 'user/getAddressList',
@@ -52,8 +52,8 @@ export default {
     return request.post(URL.getCateSubList, params)
   },
   // 根据商品小类获取商品列表
-  getGoodsListByCateId (params) {
-    return request.post(URL.getGoodsListByCateId, params)
+  getGoodsList (params) {
+    return request.post(URL.getGoodsList, params)
   },
   // 添加至购物车
   addToCart (params) {
@@ -78,5 +78,5 @@ export default {
   // 编辑修改地址
   editAddress (params) {
     return request.post(URL.editAddress, params)
-  }
+  },
 }

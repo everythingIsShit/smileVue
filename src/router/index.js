@@ -11,6 +11,7 @@ import UserCenter from '@/components/pages/UserCenter'
 import Pay from '@/components/pages/Pay'
 import AddressList from '@/components/pages/AddressList'
 import AddressEdit from '@/components/pages/AddressEdit'
+import GoodsList from '@/components/pages/GoodsList'
 
 Vue.use(Router)
 
@@ -22,6 +23,7 @@ let router = new Router({
     {path: '/goods/:goodsId', name: 'Goods', component: Goods, props: true, meta: {requireAuth: true}},
     {path: '/addressList', name: 'AddressList', component: AddressList, meta: {requireAuth: true}},
     {path: '/addressEdit', name: 'AddressEdit', component: AddressEdit, meta: {requireAuth: true}},
+    {path: '/goodsList/:searchTxt', name: 'GoodsList', component: GoodsList, meta: {requireAuth: true}, props: true},
     {
       path: '/main',
       component: Main,

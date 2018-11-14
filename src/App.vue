@@ -1,10 +1,10 @@
 <template>
   <div id="app">
-    <keep-alive>
-      <transition :name="transitionName">
+    <transition :name="transitionName">
+      <keep-alive>
         <router-view></router-view>
-      </transition>
-    </keep-alive>
+      </keep-alive>
+    </transition>
   </div>
 </template>
 
