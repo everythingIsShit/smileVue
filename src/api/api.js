@@ -1,12 +1,12 @@
 
 import request from '../utils/request'
 
-const BASEURL = 'https://www.easy-mock.com/mock/5bce8c8d98c3e07240b7e110/example/'
 const LOCALURL = process.env.NODE_ENV === 'production' ? 'http://47.107.98.115:443/' : 'http://192.168.191.1:443/'
+const MOCKURL = 'static/json/'
 
 const URL = {
   getInitData: LOCALURL + 'goods/getInitData',
-  getGoodsInfo: BASEURL + 'getFoodsList',
+  getGoodsInfo: MOCKURL + 'floor.json',
   registerUser: LOCALURL + 'user/register',
   login: LOCALURL + 'user/login',
   getDetailGoodsInfo: LOCALURL + 'goods/getDetailGoodsInfo',

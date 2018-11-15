@@ -161,6 +161,20 @@ router.get('/getInitData', async ctx => {
   ctx.body = {code: 200, message: '', data: data}
 })
 
+// 获取楼层数据
+router.get('/getFloorData', async ctx => {
+  await fs.readFile(path.resolve(__dirname, '../jsonData/json/floor.json'), 'utf8', (err, data) => {
+    if (err) {
+      ctx.body = {code: 500, message: 'err'}
+      console.log(err)
+      return
+    }
+    console.log(data)
+    ctx.body = {code: 200, message: '', data: data}
+  })
+  ctx.body = {code: 200, message: '123'}
+})
+
 // 获取商品详情
 router.post('/getDetailGoodsInfo', async ctx => {
   const goodsId = ctx.request.body.goodsId
