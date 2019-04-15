@@ -1,7 +1,7 @@
 
 import request from '../utils/request'
 
-const LOCALURL = process.env.NODE_ENV === 'production' ? 'http://47.107.98.115:443/' : 'http://192.168.191.1:443/'
+const LOCALURL = process.env.NODE_ENV === 'production' ? 'http://47.107.98.115:3001' : 'http://192.168.5.218:3001/'
 const MOCKURL = 'static/json/'
 
 const URL = {

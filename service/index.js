@@ -45,7 +45,7 @@ const { connect, initSchemas } = require('./database/init.js')
   router.use('/goods', goods.routes())
   app.use(router.routes()).use(router.allowedMethods())
 
-  app.listen(443, _ => {
-    console.log('[Server] starting at port 443')
+  app.listen(3001, _ => {
+    console.log('[Server] starting at port 3001')
   })
 })()

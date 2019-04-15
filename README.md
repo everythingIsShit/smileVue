@@ -1,23 +1,17 @@
-﻿## 前端项目运行
+﻿## 1、安装node和mongoDB
+node安装：http://www.runoob.com/nodejs/nodejs-install-setup.html
+mongodb安装：https://www.cnblogs.com/GainLoss/p/6906937.html
 
-进入项目根目录
+## 2、启动mongoDB数据库
 
-### \#安装依赖
-npm install
+## 3、启动后台服务
+a、进入根目录中的serice目录下，运行npm install
 
-### \#启动
-npm run dev
+b、运行npm run import 导入数据
 
-## 启动后端服务
-
-### \#安装mongoDB并启动
-参考[https://www.cnblogs.com/GainLoss/p/6906937.html][1]
-
-### \#进入service目录，安装依赖
-npm install
-
-### \#运行服务
-node index.js
+c、运行npm run serve 启动node服务
 
 
-  [1]: https://www.cnblogs.com/GainLoss/p/6906937.html
+## 4、启动前端工程
+
+回到项目根目录运行 npm install，然后npm run dev,浏览器打开localhost:8080

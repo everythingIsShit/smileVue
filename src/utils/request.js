@@ -57,7 +57,6 @@ function handleResult (promiseObj) {
 
 export default {
   post (url = '/', paramObj) {
-    console.log(url)
     return handleResult(axios.post(url, paramObj))
   },
   get (url = '/') {
