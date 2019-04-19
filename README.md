@@ -7,9 +7,9 @@ mongodb安装：https://www.cnblogs.com/GainLoss/p/6906937.html
 ## 3、启动后台服务
 a、进入根目录中的serice目录下，运行npm install
 
-b、运行npm run import 导入数据
+b、运行npm run serve 启动node服务
 
-c、运行npm run serve 启动node服务
+c、
 
 
 ## 4、启动前端工程

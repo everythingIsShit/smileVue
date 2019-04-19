@@ -166,10 +166,9 @@ router.get('/getFloorData', async ctx => {
   await fs.readFile(path.resolve(__dirname, '../jsonData/json/floor.json'), 'utf8', (err, data) => {
     if (err) {
       ctx.body = {code: 500, message: 'err'}
-      console.log(err)
+      console.error(err)
       return
     }
-    console.log(data)
     ctx.body = {code: 200, message: '', data: data}
   })
   ctx.body = {code: 200, message: '123'}
